@@ -32,6 +32,8 @@ function parse_ships($ships_str){
   foreach($ships as $ship){
     check_ship_syntax($ship);
   }
+
+  cheackBoundsAndOverlap($ships);
 }
 function check_ship_syntax($ship){
   $components = explode(",", $ship);
@@ -46,5 +48,11 @@ function check_ship_syntax($ship){
     }
   }
   setInvalid("ship not well formed");
+}
+
+function checkBoundsAndOverlap($ships){
+  foreach($ships as $ship){
+      
+  }
 }
 ?>
