@@ -4,7 +4,6 @@ require_once '../class/game.class.php';
 //check if both parameters are present
 if(isset($_GET['strategy']) and isset($_GET['ships'])){
   $game = new Game();
-  
   //check if valid
   //check Stratergy
   $strat = $_GET['strategy'];
@@ -12,8 +11,13 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
     setInvalid("Unknown Stratergy.");
   }
   $ships_str = $_GET['ships'];
-  parse_ships($ships_str);
-  cheackBoundsAndOverlap($game);
+  if(parse_ships($ships_str)){
+    //it is well formed, continue
+    cheackBoundsAndOverlap($game);
+  }
+  else {
+    echo "not";
+  }
 }
 else{
   setInvalid("Stratergy or ships not specified");
@@ -33,19 +37,29 @@ function parse_ships($ships_str){
     setInvalid("You need 5 ships to play");
   }
   foreach($ships as $ship){
-    check_ship_syntax($ship);
+    if(!check_ship_syntax($ship)){
+      return false;
+    }
   }
-
-
+  return true;
 }
 function check_ship_syntax($ship){
+  //checks if the syntax for the ship is valid then it stores it's values in the game's ship placements.
+  //the game instance
+  global $game;
   $components = explode(",", $ship);
   if(count($components) == 4){
     if(filter_var($components[2], FILTER_VALIDATE_INT) AND $components[2] <=10){
       if(filter_var($components[1], FILTER_VALIDATE_INT) AND $components[1] <=10){
         if($components[3] == "false" OR $components[3] == "true"){
           //well formed
-          return true;
+          if($game->storeShipPlacement($components)){
+            return true;
+          }
+          else{
+            setInvalid("Ship '$components[0]' unknown");
+            return false;
+          }
         }
       }
     }
