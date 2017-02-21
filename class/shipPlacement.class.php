@@ -18,8 +18,5 @@ class ShipPlacement{
   function setIsHorizontal($direction){
     $this->isHorizontal = $direction;
   }
-  function toJson(){
-    return json_encode($this);
-  }
 }
  ?>
