@@ -31,7 +31,7 @@ class Game{
     $shipPlacement = $this->ship_exists($ship_info[0]);
     if($shipPlacement){
       //store the coords and value
-      $shipPlacement->setCoordinate($ship_info[1], $ship_info[2]);
+      $shipPlacement->setCoordinate(intval($ship_info[1]), intval($ship_info[2]));
       $shipPlacement->setIsHorizontal($ship_info[3]);
     }
     else{
@@ -49,6 +49,9 @@ class Game{
   }
   function getShipPlacements(){
     return $this->shipPlacements;
+  }
+  function getBoard(){
+    return $this->board;
   }
   function stratergy_exists($stratery){
     foreach($this->stratergies as $strat){

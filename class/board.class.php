@@ -7,7 +7,7 @@ class Board{
   function __construct($size){
     if($size > 0){
       $this->size = $size;
-      $grid = $this->build_grid($size);
+      $this->grid = $this->build_grid($size);
     }
   }
   protected function build_grid($size){
@@ -17,7 +17,12 @@ class Board{
       for($j = 0; $j < $size; $j++){
         $row[] = 0;
       }
+      $grid[] = $row;
     }
+    return $grid;
+  }
+  public function getGrid(){
+    return $this->grid;
   }
   public function setValueAt($x, $y, $val){
     //set the value at the coordinate x,y
