@@ -13,7 +13,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
   $ships_str = $_GET['ships'];
   if(parse_ships($ships_str)){
     //it is well formed, continue
-    checkBoundsAndOverlap($game);
+    checkBoundsAndOverlap();
   }
   else {
     echo "not";
@@ -67,7 +67,7 @@ function check_ship_syntax($ship){
   setInvalid("ship not well formed");
 }
 
-function checkBoundsAndOverlap($game){
+function checkBoundsAndOverlap(){
   $ships = $game->getShipPlacements();
   $board = $game->$board;
   foreach($ships as $ship){
