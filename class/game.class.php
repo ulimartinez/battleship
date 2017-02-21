@@ -15,7 +15,7 @@ class Game{
     $info = array();
     $info['size'] = $this->board->getSize();
     $info['stratergies'] = $this->stratergies;
-    $info['ships'] = $this->ships;
+    $info['ships'] = $this->getShipInfo();
     return json_encode($info);
   }
   public function create_ships(){
@@ -27,11 +27,18 @@ class Game{
     }
     return $ships;
   }
+  private function getShipInfo(){
+    $ships_info = array();
+    foreach($this->shipPlacements as $placement){
+      $ships_info[] = $placement->getShip();
+    }
+    return $ships_info;
+  }
   function storeShipPlacement($ship_info){
     $shipPlacement = $this->ship_exists($ship_info[0]);
     if($shipPlacement){
       //store the coords and value
-      $shipPlacement->setCoordinate($ship_info[1], $ship_info[2]);
+      $shipPlacement->setCoordinate(intval($ship_info[1]), intval($ship_info[2]));
       $shipPlacement->setIsHorizontal($ship_info[3]);
     }
     else{
@@ -49,6 +56,9 @@ class Game{
   }
   function getShipPlacements(){
     return $this->shipPlacements;
+  }
+  function getBoard(){
+    return $this->board;
   }
   function stratergy_exists($stratery){
     foreach($this->stratergies as $strat){
