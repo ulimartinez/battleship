@@ -4,7 +4,7 @@ require_once '../class/game.class.php';
 //check if both parameters are present
 if(isset($_GET['strategy']) and isset($_GET['ships'])){
   $game = new Game();
-  $ships = $game->getShipPlacements()
+  
   //check if valid
   //check Stratergy
   $strat = $_GET['strategy'];
@@ -13,6 +13,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
   }
   $ships_str = $_GET['ships'];
   parse_ships($ships_str);
+  cheackBoundsAndOverlap($game);
 }
 else{
   setInvalid("Stratergy or ships not specified");
@@ -35,7 +36,7 @@ function parse_ships($ships_str){
     check_ship_syntax($ship);
   }
 
-  cheackBoundsAndOverlap($ships);
+
 }
 function check_ship_syntax($ship){
   $components = explode(",", $ship);
@@ -52,9 +53,20 @@ function check_ship_syntax($ship){
   setInvalid("ship not well formed");
 }
 
-function checkBoundsAndOverlap($ships){
+function checkBoundsAndOverlap($game){
+  $ships = $game->getShipPlacements()
   foreach($ships as $ship){
-      
+    if($ship->isHorizontal){
+        if($ship->getX()+$ship->$ship->getSize()>10){
+          setInvalid("Ship out of bounds");  
+        }
+        for($i = $ship->getX(); $i<$ship->getSize(); $i++){
+          
+        }
+    }
+    else{
+
+    }
   }
 }
 ?>
