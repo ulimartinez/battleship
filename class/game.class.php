@@ -15,7 +15,7 @@ class Game{
     $info = array();
     $info['size'] = $this->board->getSize();
     $info['stratergies'] = $this->stratergies;
-    $info['ships'] = $this->ships;
+    $info['ships'] = $this->getShipInfo();
     return json_encode($info);
   }
   public function create_ships(){
@@ -26,6 +26,13 @@ class Game{
       $ships[] = new ShipPlacement(new Ship($names[$i], $sizes[$i]));
     }
     return $ships;
+  }
+  private function getShipInfo(){
+    $ships_info = array();
+    foreach($this->shipPlacements as $placement){
+      $ships_info[] = $placement->getShip();
+    }
+    return $ships_info;
   }
   function storeShipPlacement($ship_info){
     $shipPlacement = $this->ship_exists($ship_info[0]);
