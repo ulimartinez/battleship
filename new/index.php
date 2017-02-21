@@ -54,18 +54,34 @@ function check_ship_syntax($ship){
 }
 
 function checkBoundsAndOverlap($game){
-  $ships = $game->getShipPlacements()
+  $ships = $game->getShipPlacements();
+  $board = $game->$board;
   foreach($ships as $ship){
     if($ship->isHorizontal){
         if($ship->getX()+$ship->$ship->getSize()>10){
           setInvalid("Ship out of bounds");  
         }
         for($i = $ship->getX(); $i<$ship->getSize(); $i++){
-          
+          if($board->getValueAt($i-1, $ship->getY()-1) != 0){
+            setInvalid("Overlapping ships");
+          }
+          else{
+            $board->setValueAt($i-1, $ship->getY()-1, 1);
+          }
         }
     }
     else{
-
+      if($ship->getY()+$ship->$ship->getSize()>10){
+        setInvalid("Ship out of bounds");
+      }
+      for($j = $ship->getY(); $j<$ship->getSize(); $j++){
+          if($board->getValueAt($ship->getX()-1, $j-1) != 0){
+            setInvalid("Overlapping ships");
+          }
+          else{
+            $board->setValueAt($ship->getX()-1, $j-1, 1);
+          }
+        }
     }
   }
 }
