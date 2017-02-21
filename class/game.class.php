@@ -4,7 +4,7 @@ require_once 'board.class.php';
 class Game{
   public $board;
   public $stratergies;
-  public $ships;
+  public $shipPlacements;
   function __construct(){
     $this->board = new Board(10);
     $this->stratergies = array("Smart", "Random", "Sweep");

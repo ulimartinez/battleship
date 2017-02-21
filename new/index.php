@@ -1,8 +1,10 @@
 <?php
 $toReturn = array();
 require_once '../class/game.class.php';
+//check if both parameters are present
 if(isset($_GET['strategy']) and isset($_GET['ships'])){
   $game = new Game();
+  $ships = $game->getShipPlacements()
   //check if valid
   //check Stratergy
   $strat = $_GET['strategy'];
