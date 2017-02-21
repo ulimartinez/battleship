@@ -13,7 +13,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
   $ships_str = $_GET['ships'];
   if(parse_ships($ships_str)){
     //it is well formed, continue
-    cheackBoundsAndOverlap($game);
+    checkBoundsAndOverlap($game);
   }
   else {
     echo "not";
