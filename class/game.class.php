@@ -2,11 +2,14 @@
 require_once 'shipPlacement.class.php';
 require_once 'ship.class.php';
 require_once 'board.class.php';
+require_once 'strategy.class.php';
 class Game{
   public $board;
   public $boardpc;
   public $stratergies;
   public $shipPlacements;
+  public $currentStrategy;
+
   function __construct(){
     $this->board = new Board(10);
     $this->stratergies = array("Smart", "Random", "Sweep");
@@ -69,11 +72,22 @@ class Game{
   }
   function stratergy_exists($stratery){
     foreach($this->stratergies as $strat){
-      if($stratery == $strat){
+      if($stratergy == $strat){
+        $this->set_strategy($stratergy);
         return true;
       }
     }
     return false;
   }
+  function set_strategy($currentStrategy){
+      $statergie=new Strategy($currentStrategy);
+      if($statergie->getStrategy() == "Smart"){
+        $statergie->smartStrategy();
+      } elseif ($statergie->getStrategy() == "Random") {
+        $statergie->randomStrategy();
+      } else {
+        $statergie->sweepStrategy();
+      }
+    }
 }
  ?>
