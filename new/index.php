@@ -1,5 +1,5 @@
 <?php
-$toReturn = array();
+header('Content-Type: application/json');
 require_once '../class/game.class.php';
 //check if both parameters are present
 if(isset($_GET['strategy']) and isset($_GET['ships'])){
@@ -15,7 +15,11 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
     //it is well formed, continue
     if(checkBoundsAndOverlap($game)){
       //ships are ok, placed good
-      saveBoard();
+      //build the opponent ship placement
+      $game->buildPCFleet();
+      //save everyting to a file
+      $id = saveBoard();
+      echo json_encode(array('response'=>true, 'pid'=>$id));
     }
   }
   else {
@@ -26,8 +30,6 @@ else{
   setInvalid("Stratergy or ships not specified");
 }
 
-header('Content-Type: application/json');
-
 function setInvalid($reason){
   $invalid = array();
   $invalid['response'] = false;
@@ -36,14 +38,17 @@ function setInvalid($reason){
   die();
 }
 function saveBoard(){
-  $file_name = getFileName();
+  $file_id = getFileNameAndId();
+  $file_name = $file_id['filename'];
+  $id = $file_id['id'];
   global $game;
   $json = json_encode($game);
   $fp = fopen("../games/$file_name", 'w');
   fwrite($fp, $json);
   fclose($fp);
+  return $id;
 }
-function getFileName(){
+function getFileNameAndId(){
   $path = "../games";
   $games = scandir($path);
   $num = 1;
@@ -54,7 +59,7 @@ function getFileName(){
     $base = explode(".", $last_file)[0];
     $num = (int)(explode("-", $base)[1])+1;
   }
-  return "g-$num.json";
+  return array("filename"=>"g-$num.json", "id"=>$num);
 }
 function parse_ships($ships_str){
   $ships = explode(";", $ships_str);
@@ -93,6 +98,7 @@ function check_ship_syntax($ship){
 }
 
 function checkBoundsAndOverlap(){
+  global $game;
   $ships = $game->getShipPlacements();
   $board = $game->getBoard();
   foreach($ships as $shipPlacement){

@@ -8,16 +8,15 @@ class Game{
   public $boardpc;
   public $stratergies;
   public $shipPlacements;
-  public $shipPlacementspc
+  public $shipPlacementspc;
   public $currentStrategy;
 
   function __construct(){
     $this->board = new Board(10);
-    $this->board = new Board(10);
+    $this->boardpc = new Board(10);
     $this->stratergies = array("Smart", "Random", "Sweep");
     $this->shipPlacements = $this->create_ships();
     $this->shipPlacementspc = $this->create_ships();
-    buildPCFleet();
   }
   public static function createFromJson($json_str){
     $game = json_decode($json_str);
@@ -84,7 +83,7 @@ class Game{
   function getBoard(){
     return $this->board;
   }
-  function stratergy_exists($stratergies){
+  function stratergy_exists($stratery){
     foreach($this->stratergies as $strat){
       if($stratery == $strat){
         $this->set_strategy($stratery);
@@ -95,7 +94,7 @@ class Game{
   }
 
   function buildPCFleet(){
-    foreach($shipPlacementspc as $ship){
+    foreach($this->shipPlacementspc as $ship){
       $size = $ship->getShip()->getSize();
       $isHorizontal = rand(0,1);
       if($isHorizontal){
@@ -107,16 +106,16 @@ class Game{
           $available = true;
       //check if it is available for the given size
           for($i = $x; $i < ($size+$x);$i++){
-            if($board->getValueAt($i,$y) != 0){
+            if($this->boardpc->getValueAt($i,$y) != 0){
               $available = false;
               break;
             }
           }
           if($available){
-            $ship->setCoordinates($x,$y);
+            $ship->setCoordinate($x,$y);
             $ship->setIsHorizontal($isHorizontal);
             for($i = $x; $i < ($size+$x);$i++){
-              $board->setValueAt($i,$y,1);
+              $this->boardpc->setValueAt($i,$y,1);
             }
           }
         }
@@ -131,16 +130,16 @@ class Game{
           $available = true;
       //check if it is available for the given size
           for($j = $y; $j < ($size+$y);$j++){
-            if($board->getValueAt($x,$j) != 0){
+            if($this->boardpc->getValueAt($x,$j) != 0){
               $available = false;
               break;
             }
           }
           if($available){
-            $ship->setCoordinates($x,$y);
+            $ship->setCoordinate($x,$y);
             $ship->setIsHorizontal($isHorizontal);
             for($j = $y; $j < ($size+$y);$j++){
-              $board->setValueAt($x,$j,1);
+              $this->boardpc->setValueAt($x,$j,1);
             }
           }
         }
