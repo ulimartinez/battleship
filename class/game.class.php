@@ -90,6 +90,7 @@ class Game{
     return false;
   }
   function set_strategy($currentStrategy){
+    $this->currentStrategy = $currentStrategy;
       $statergie=new Strategy($currentStrategy);
       if($statergie->getStrategy() == "Smart"){
         $statergie->smartStrategy();
