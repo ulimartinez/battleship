@@ -63,11 +63,10 @@ class Game{
   function getBoard(){
     return $this->board;
   }
-
-  function stratergy_exists($stratergies){
+  function stratergy_exists($stratery){
     foreach($this->stratergies as $strat){
-      if($stratergies == $strat){
-        $this->set_strategy($stratergies);
+      if($stratergy == $strat){
+        $this->set_strategy($stratergy);
         return true;
       }
     }
