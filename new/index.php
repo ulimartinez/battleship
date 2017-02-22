@@ -25,6 +25,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
 else{
   setInvalid("Stratergy or ships not specified");
 }
+
 header('Content-Type: application/json');
 
 function setInvalid($reason){
@@ -92,7 +93,6 @@ function check_ship_syntax($ship){
 }
 
 function checkBoundsAndOverlap(){
-  global $game;
   $ships = $game->getShipPlacements();
   $board = $game->getBoard();
   foreach($ships as $shipPlacement){
