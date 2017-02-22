@@ -17,7 +17,6 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
       //ships are ok, placed good
       saveBoard();
     }
->>>>>>> upstream/master
   }
   else {
     setInvalid("Parse error");
