@@ -25,6 +25,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
 else{
   setInvalid("Stratergy or ships not specified");
 }
+
 header('Content-Type: application/json');
 
 function setInvalid($reason){
