@@ -1,7 +1,7 @@
 <?php
 class Board{
   public $size;
-  protected $grid;
+  public $grid;
 
   //TODO: type hint this to int
   function __construct($size){
@@ -23,6 +23,9 @@ class Board{
   }
   public function getGrid(){
     return $this->grid;
+  }
+  public function setGrid($grid){
+    $this->grid = $grid;
   }
   public function setValueAt($x, $y, $val){
     //set the value at the coordinate x,y

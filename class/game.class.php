@@ -2,14 +2,34 @@
 require_once 'shipPlacement.class.php';
 require_once 'ship.class.php';
 require_once 'board.class.php';
+require_once 'strategy.class.php';
 class Game{
   public $board;
+  public $boardpc;
   public $stratergies;
   public $shipPlacements;
+  public $currentStrategy;
+
   function __construct(){
     $this->board = new Board(10);
     $this->stratergies = array("Smart", "Random", "Sweep");
     $this->shipPlacements = $this->create_ships();
+  }
+  public static function createFromJson($json_str){
+    $game = json_decode($json_str);
+    //create the object
+    $tmp_game = new self();
+    $tmp_game->currentStrategy = $game->currentStrategy;
+    $this->board->setGrid($game->board->grid);
+    $this->boardpc->setGrid($game->boardpc->grid);
+    foreach ($game->shipPlacements as $tmp_placement) {
+      $tmp_ship = $this->ship_exists($tmp_placement->ship->name);
+      if($tmp_ship){
+        $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
+        $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+      }
+    }
+    return $tmp_game;
   }
   function getInfoJson(){
     $info = array();
@@ -63,14 +83,16 @@ class Game{
   function stratergy_exists($stratery){
     foreach($this->stratergies as $strat){
       if($stratery == $strat){
+        $this->set_strategy($stratery);
         return true;
       }
     }
     return false;
   }
+
   function buildPCFleet(){
     foreach($ships as $ship){
-      $size = $ship->getShip()->getSize()
+      $size = $ship->getShip()->getSize();
       echo "attempting to insert boat size ".$size."<br/>";
       $isHorizontal = rand(0,1);
       if($isHorizontal){
@@ -131,5 +153,17 @@ class Game{
       }
     }
   }
+
+  function set_strategy($currentStrategy){
+      $statergie=new Strategy($currentStrategy);
+      if($statergie->getStrategy() == "Smart"){
+        $statergie->smartStrategy();
+      } elseif ($statergie->getStrategy() == "Random") {
+        $statergie->randomStrategy();
+      } else {
+        $statergie->sweepStrategy();
+      }
+    }
+
 }
 ?>
