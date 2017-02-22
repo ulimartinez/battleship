@@ -37,7 +37,10 @@ function setInvalid($reason){
 function saveBoard(){
   $file_name = getFileName();
   global $game;
-  echo json_encode($game);
+  $json = json_encode($game);
+  $fp = fopen("../games/$file_name", 'w');
+  fwrite($fp, $json);
+  fclose($fp);
 }
 function getFileName(){
   $path = "../games";
