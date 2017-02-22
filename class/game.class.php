@@ -89,6 +89,71 @@ class Game{
     }
     return false;
   }
+
+  function buildPCFleet(){
+    foreach($ships as $ship){
+      $size = $ship->getShip()->getSize();
+      echo "attempting to insert boat size ".$size."<br/>";
+      $isHorizontal = rand(0,1);
+      if($isHorizontal){
+        $available = false;
+        while(!$available){
+      //choose start location
+          $x = rand(0,9-$size);
+          $y = rand(0,9);
+          $available = true;
+      //check if it is available for the given size
+          for($i = $x; $i < ($size+$x);$i++){
+            if($board->getValueAt($i,$y) != 0){
+              $available = false;
+              break;
+            }
+          }
+          if($available){
+            $ship->setCoordinates($x,$y);
+            $ship->setIsHorizontal($isHorizontal);
+            for($i = $x; $i < ($size+$x);$i++){
+              $board->setValueAt($i,$y,1);
+            }
+            echo "inserted boat size ".$size." at ".$x.", ".$y." horizontally"."<br/>";
+          }
+        }
+      }
+      else{
+        $available = false;
+        while(!$available){
+      //echo "attempting to insert boat size ".$size;
+      //choose start location
+          $x = rand(0,9);
+          $y = rand(0,9-$size);
+          $available = true;
+      //check if it is available for the given size
+          for($j = $y; $j < ($size+$y);$j++){
+            if($board->getValueAt($x,$j) != 0){
+              $available = false;
+              break;
+            }
+          }
+          if($available){
+            $ship->setCoordinates($x,$y);
+            $ship->setIsHorizontal($isHorizontal);
+            for($j = $y; $j < ($size+$y);$j++){
+              $board->setValueAt($x,$j,1);
+            }
+            echo "inserted boat size ".$size." at ".$x.", ".$y." vertically"."<br/>";
+          }
+        }
+      }
+    }
+    echo json_encode($board->getGrid());
+    $counter = 0;
+    for($i = 0; $i < count($grid); $i++){
+      for($j = 0; $j < count($grid[$i]); $j++){
+        $counter = $counter + $grid[$i][$j];
+      }
+    }
+  }
+
   function set_strategy($currentStrategy){
       $statergie=new Strategy($currentStrategy);
       if($statergie->getStrategy() == "Smart"){
@@ -99,5 +164,6 @@ class Game{
         $statergie->sweepStrategy();
       }
     }
+
 }
- ?>
+?>

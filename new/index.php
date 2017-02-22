@@ -92,7 +92,6 @@ function check_ship_syntax($ship){
 }
 
 function checkBoundsAndOverlap(){
-  global $game;
   $ships = $game->getShipPlacements();
   $board = $game->getBoard();
   foreach($ships as $shipPlacement){
