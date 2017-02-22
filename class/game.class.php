@@ -4,12 +4,19 @@ require_once 'ship.class.php';
 require_once 'board.class.php';
 class Game{
   public $board;
+  public $boardpc;
   public $stratergies;
   public $shipPlacements;
   function __construct(){
     $this->board = new Board(10);
     $this->stratergies = array("Smart", "Random", "Sweep");
     $this->shipPlacements = $this->create_ships();
+  }
+  public static function createFromJson($json_str){
+    $game = json_decode($json_str);
+    //create the object
+    $tmp_game = new self();
+    $tmp_game->stratergies = $game->stratergies;
   }
   function getInfoJson(){
     $info = array();

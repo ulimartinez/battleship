@@ -35,8 +35,22 @@ function setInvalid($reason){
   die();
 }
 function saveBoard(){
+  $file_name = getFileName();
   global $game;
-  //echo json_encode($game->getBoard()->getGrid());
+  echo json_encode($game);
+}
+function getFileName(){
+  $path = "../games";
+  $games = scandir($path);
+  $num = 1;
+  if(count($games) > 2){
+    //case where there are files in here
+    //store the name of the last file
+    $last_file = $games[count($games)-1];
+    $base = explode(".", $last_file)[0];
+    $num = (int)(explode("-", $base)[1])+1;
+  }
+  return "g-$num.json";
 }
 function parse_ships($ships_str){
   $ships = explode(";", $ships_str);
