@@ -8,12 +8,16 @@ class Game{
   public $boardpc;
   public $stratergies;
   public $shipPlacements;
+  public $shipPlacementspc
   public $currentStrategy;
 
   function __construct(){
     $this->board = new Board(10);
+    $this->board = new Board(10);
     $this->stratergies = array("Smart", "Random", "Sweep");
     $this->shipPlacements = $this->create_ships();
+    $this->shipPlacementspc = $this->create_ships();
+    buildPCFleet();
   }
   public static function createFromJson($json_str){
     $game = json_decode($json_str);
@@ -91,9 +95,8 @@ class Game{
   }
 
   function buildPCFleet(){
-    foreach($ships as $ship){
+    foreach($shipPlacementspc as $ship){
       $size = $ship->getShip()->getSize();
-      echo "attempting to insert boat size ".$size."<br/>";
       $isHorizontal = rand(0,1);
       if($isHorizontal){
         $available = false;
@@ -115,7 +118,6 @@ class Game{
             for($i = $x; $i < ($size+$x);$i++){
               $board->setValueAt($i,$y,1);
             }
-            echo "inserted boat size ".$size." at ".$x.", ".$y." horizontally"."<br/>";
           }
         }
       }
@@ -140,16 +142,8 @@ class Game{
             for($j = $y; $j < ($size+$y);$j++){
               $board->setValueAt($x,$j,1);
             }
-            echo "inserted boat size ".$size." at ".$x.", ".$y." vertically"."<br/>";
           }
         }
-      }
-    }
-    echo json_encode($board->getGrid());
-    $counter = 0;
-    for($i = 0; $i < count($grid); $i++){
-      for($j = 0; $j < count($grid[$i]); $j++){
-        $counter = $counter + $grid[$i][$j];
       }
     }
   }
