@@ -65,8 +65,8 @@ class Game{
   }
   function stratergy_exists($stratergies){
     foreach($this->stratergies as $strat){
-      if($stratergies == $strat){
-        $this->set_strategy($stratergies);
+      if($stratergy == $strat){
+        $this->set_strategy($stratergy);
         return true;
       }
     }

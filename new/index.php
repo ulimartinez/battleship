@@ -74,6 +74,7 @@ function check_ship_syntax($ship){
   }
   setInvalid("ship not well formed");
 }
+
 function checkBoundsAndOverlap(){
   global $game;
   $ships = $game->getShipPlacements();
