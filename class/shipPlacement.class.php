@@ -15,8 +15,22 @@ class ShipPlacement{
     $this->xcoordinate = $x;
     $this->ycoordinate = $y;
   }
+  function getX(){
+    return $this->xcoordinate;
+  }
+  function getY(){
+    return $this->ycoordinate;
+  }
   function setIsHorizontal($direction){
-    $this->isHorizontal = $direction;
+    if($direction == "false"){
+      $this->isHorizontal = false;
+    }
+    else{
+      $this->isHorizontal = true;
+    }
+  }
+  function toJson(){
+    return json_encode($this);
   }
 }
  ?>
