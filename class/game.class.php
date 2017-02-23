@@ -182,36 +182,87 @@ class Game{
       return false;
     }
     else{
-      $shotShip = $this->findBoat($x,$y);
+      $shotShip = $this->findShip($x,$y);
       return true;
     } 
   }
 
-  function findBoat($x,$y){
-    //chech user boats
-    $ships = $this->$shipPlacements();
+  private function findShip($x,$y){
+    //check user boats
+    $ships = $this->shipPlacements;
     foreach($ships as $ship){
       $size = $ship->getShip()->getSize();
       if($ship->isHorizontal(){
-
+        if($ship->getY() == $y){
+          for($i = $ship->getX(); $i < $ship->getX()+$size; i++){
+            if($i == $x){
+              $shotIndex = $i-$ship->getX();
+              handleShot($x,$y,$ship,$shotIndex);
+              return $ship;
+            }
+          }
+        }
       }
       else{
         if($ship->getX() == $x){
           for($j = $ship->getY(); $j < $ship->getY()+$size; $j++){
             if($j == $y){
-              $shotIndex = $$ship->getY()
-              $ship->handleShot($shotIndex);
+              $shotIndex = $j-$ship->getY();
+              handleShot($x,$y,$ship,$shotIndex);
               return $ship;
             }
           }
         }
       }
     }
+  }
+
+  private function findPCShip($x,$y){
     //check pc boats
+    $ships = $this->shipPlacementspc;
+    foreach($ships as $ship){
+      $size = $ship->getShip()->getSize();
+      if($ship->isHorizontal(){
+        if($ship->getY() == $y){
+          for($i = $ship->getX(); $i < $ship->getX()+$size; i++){
+            if($i == $x){
+              $shotIndex = $i-$ship->getX();
+              handlePCShot($x,$y,$ship,$shotIndex);
+              return $ship;
+            }
+          }
+        }
+      }
+      else{
+        if($ship->getX() == $x){
+          for($j = $ship->getY(); $j < $ship->getY()+$size; $j++){
+            if($j == $y){
+              $shotIndex = $j-$ship->getY();
+              handlePCShot($x,$y,$ship,$shotIndex);
+              return $ship;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private function handleShot($x,$y,$shotShip,$shotIndex){
+    //modify board
+    $this->board->setValueAt($x,$y,2);
+    //modify ship
+    $shotShip->getShip()->isShotAt($shotindex);
+  }
+
+  private function handlePCShot($x,$y,$shotShip,$shotIndex){
+    //modify board
+    $this->boardpc->setValueAt($x,$y,2);
+    //modify ship
+    $shotShip->getShip()->isShotAt($shotindex);
   }
 
   funtion isSunk($shotShip){
-    return $shotShip->isSunk();
+    return $shotShip->getShip()->isSunk();
   }
 }
 ?>
