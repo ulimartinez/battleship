@@ -199,7 +199,7 @@ class Game{
         if($ship->getX() == $x){
           for($j = $ship->getY(); $j < $ship->getY()+$size; $j++){
             if($j == $y){
-
+              $shotIndex = $$ship->getY()
               $ship->handleShot($shotIndex);
               return $ship;
             }
@@ -208,6 +208,10 @@ class Game{
       }
     }
     //check pc boats
+  }
+
+  funtion isSunk($shotShip){
+    return $shotShip->isSunk();
   }
 }
 ?>
