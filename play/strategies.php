@@ -13,7 +13,31 @@ function shootRandom(){
 }
 function shootSmart(){
   global $game;
-  echo "Yay a smart shot";
+  $cheat = rand(0,1);
+  if($cheat){
+    //do some cheeky stuff here
+    foreach ($game->shipPlacements as $shipPlacement) {
+      if($shipPlacement->isHorizontal){
+        for($i = $shipPlacement->getX(); $i < $shipPlacement->getX()+$shipPlacement->getShip()->getSize(); $i++){
+          if($game->shotIsValid($i, $shipPlacement->getY())){
+            return doShot($i, $shipPlacement->getY());
+            break 2;
+          }
+        }
+      }
+      else{
+        for($i = $shipPlacement->getY(); $i < $shipPlacement->getY()+$shipPlacement->getShip()->getSize(); $i++){
+          if($game->shotIsValid($shipPlacement->getX(), $i)){
+            return doShot($shipPlacement->getX(), $i);
+            break 2;
+          }
+        }
+      }
+    }
+  }
+  else{
+    return shootRandom();
+  }
 }
 function shootSweep(){
   global $game;
@@ -28,7 +52,8 @@ function shootSweep(){
 }
 function doShot($x, $y){
   global $game;
+  global $pid;
   $hitShip = $game->hitShip($x, $y);
-  return $game->buildResponse($x, $y, $hitShip);
+  return $game->buildResponse($x, $y, $hitShip, $pid);
 }
 ?>

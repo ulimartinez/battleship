@@ -206,7 +206,7 @@ class Game{
           for($i = $ship->getX(); $i < $ship->getX()+$size; $i++){
             if($i == $x){
               $shotIndex = $i-$ship->getX();
-              handleShot($x,$y,$ship,$shotIndex);
+              $this->handleShot($x,$y,$ship,$shotIndex);
               return $ship;
             }
           }
@@ -217,7 +217,7 @@ class Game{
           for($j = $ship->getY(); $j < $ship->getY()+$size; $j++){
             if($j == $y){
               $shotIndex = $j-$ship->getY();
-              handleShot($x,$y,$ship,$shotIndex);
+              $this->handleShot($x,$y,$ship,$shotIndex);
               return $ship;
             }
           }
@@ -267,7 +267,7 @@ class Game{
       //case where hit
       $response['isHit'] = true;
       $response['isWin'] = $this->isWon();
-      $sunk = $ship->getShip->isSunk();
+      $sunk = $ship->getShip()->isSunk();
       $response['isSunk'] = $sunk;
       if($sunk){
         $response['ship'] = $ship->getCoordinatesArray();

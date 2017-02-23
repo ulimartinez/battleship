@@ -2,6 +2,7 @@
 require_once "../class/game.class.php";
 require "strategies.php";
 $game;
+$pid;
 if(isset($_GET['pid']) and isset($_GET['shot'])){
   $pid = $_GET['pid'];
   $shot_str = $_GET['shot'];
@@ -16,6 +17,7 @@ if(isset($_GET['pid']) and isset($_GET['shot'])){
       //pc's shot
       $response['shot'] = pcMove();
       echo json_encode($response);
+      saveBoard();
     }
   }
   else{
@@ -75,6 +77,15 @@ function playerMove($x, $y){
   global $game;
   $hitShip = $game->hitShip($x, $y);
   return $game->buildResponse($x, $y, $hitShip);
+}
+function saveBoard(){
+  global $pid;
+  $file_name = "g-$pid.json";
+  global $game;
+  $json = json_encode($game);
+  $fp = fopen("../games/$file_name", 'w');
+  fwrite($fp, $json);
+  fclose($fp);
 }
 
 /*{"response": true,
