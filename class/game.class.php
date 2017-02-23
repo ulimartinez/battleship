@@ -9,6 +9,7 @@ class Game{
   public $shipPlacements;
   public $shipPlacementspc;
   public $currentStrategy;
+  public $isUserTurn;
 
   function __construct(){
     $this->board = new Board(10);
@@ -16,6 +17,7 @@ class Game{
     $this->stratergies = array("Smart", "Random", "Sweep");
     $this->shipPlacements = $this->create_ships();
     $this->shipPlacementspc = $this->create_ships();
+    $this->isUserTurn = true;
   }
   public static function createFromJson($json_str){
     //TODO: check if pc ship placement works correctly
@@ -166,7 +168,12 @@ class Game{
   }
 
   function shotIsValid($x,$y){
-    $currVal = $this->board->getValueAt($x,$y);
+    if($this->isUserTurn){
+      $currVal = $this->boardpc->getValueAt($x,$y);
+    }
+    else{
+      $currVal = $this->board->getValueAt($x,$y);
+    }
     if($currVal > 1){
       return false;
     }
@@ -176,19 +183,29 @@ class Game{
   }
 
   function hitBoat($x,$y){
-    $response = $board->getValueAt($x,$y);
-    if($response == 0){
-      $board->setValueAt($x,$y,3);
+    if($this->isUserTurn){
+      $currBoard = $this->boardpc;
+    }
+    else{
+      $currBoard = $this->board;
+    }
+    $currVal = $currBoard->getValueAt($x,$y);
+    if($currVal == 0){
+      $boardpc->setValueAt($x,$y,3);
       return false;
     }
     else{
-      return $this->findBoat($x,$y);
+      return $this->findShip($x,$y);
     }
   }
 
   private function findShip($x,$y){
-    //check user boats
-    $ships = $this->shipPlacements;
+    if($this->isUserTurn){
+      $ships = $this->shipPlacementspc;
+    }
+    else{
+      $ships = $this->shipPlacements;
+    }
     foreach($ships as $ship){
       $size = $ship->getShip()->getSize();
       if($ship->isHorizontal()){
@@ -216,52 +233,37 @@ class Game{
     }
   }
 
-  private function findPCShip($x,$y){
-    //check pc boats
-    $ships = $this->shipPlacementspc;
-    foreach($ships as $ship){
-      $size = $ship->getShip()->getSize();
-      if($ship->isHorizontal(){
-        if($ship->getY() == $y){
-          for($i = $ship->getX(); $i < $ship->getX()+$size; i++){
-            if($i == $x){
-              $shotIndex = $i-$ship->getX();
-              handlePCShot($x,$y,$ship,$shotIndex);
-              return $ship;
-            }
-          }
-        }
-      }
-      else{
-        if($ship->getX() == $x){
-          for($j = $ship->getY(); $j < $ship->getY()+$size; $j++){
-            if($j == $y){
-              $shotIndex = $j-$ship->getY();
-              handlePCShot($x,$y,$ship,$shotIndex);
-              return $ship;
-            }
-          }
-        }
-      }
-    }
-  }
-
   private function handleShot($x,$y,$shotShip,$shotIndex){
     //modify board
-    $this->board->setValueAt($x,$y,2);
+    if($this->isUserTurn){
+      $this->boardpc->setValueAt($x,$y,2);
+    }
+    else{
+      $this->board->setValueAt($x,$y,2);
+    }
     //modify ship
-    $shotShip->getShip()->isShotAt($shotindex);
-  }
-
-  private function handlePCShot($x,$y,$shotShip,$shotIndex){
-    //modify board
-    $this->boardpc->setValueAt($x,$y,2);
-    //modify ship
-    $shotShip->getShip()->isShotAt($shotindex);
+    $shotShip->getShip()->isShotAt($shotIndex);
   }
 
   funtion isSunk($shotShip){
     return $shotShip->getShip()->isSunk();
+  }
+
+  function isWon(){
+    if($this->isUserTurn){
+      $currShips = $this->shipPlacementspc;
+    }
+    else{
+      $currShips = $this->shipPlacements;
+    }
+    $won = true;
+    foreach($currShips as $ship){
+      if(!$ship->getShip()->isSunk()){
+        $won = false;
+        break;
+      }
+    }
+    return $won;
   }
 }
 ?>
