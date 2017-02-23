@@ -65,6 +65,7 @@ function parse_shoot($shot_str){
         }
       }
 }
+
 function pcMove(){
   global $game;
   $strat = $game->getStrategy();
