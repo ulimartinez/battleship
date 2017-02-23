@@ -182,7 +182,7 @@ class Game{
     }
   }
 
-  function hitBoat($x,$y){
+  function hitShip($x,$y){
     if($this->isUserTurn){
       $currBoard = $this->boardpc;
     }
@@ -191,7 +191,7 @@ class Game{
     }
     $currVal = $currBoard->getValueAt($x,$y);
     if($currVal == 0){
-      $boardpc->setValueAt($x,$y,3);
+      $currBoard->setValueAt($x,$y,3);
       return false;
     }
     else{
@@ -210,7 +210,7 @@ class Game{
       $size = $ship->getShip()->getSize();
       if($ship->isHorizontal()){
         if($ship->getY() == $y){
-          for($i = $ship->getX(); $i < $ship->getX()+$size; i++){
+          for($i = $ship->getX(); $i < $ship->getX()+$size; $i++){
             if($i == $x){
               $shotIndex = $i-$ship->getX();
               handleShot($x,$y,$ship,$shotIndex);
@@ -245,7 +245,7 @@ class Game{
     $shotShip->getShip()->isShotAt($shotIndex);
   }
 
-  funtion isSunk($shotShip){
+  function isSunk($shotShip){
     return $shotShip->getShip()->isSunk();
   }
 
