@@ -64,7 +64,7 @@ function parse_shoot($shot_str){
     return false;
   }
   else {
-    return array($shoot_coordinates[0], $shoot_coordinates[1]);
+    return array($shoot_coordinates[0]-1, $shoot_coordinates[1]-1);
   }
 }
 
