@@ -23,10 +23,17 @@ class Game{
     //create the object
     $tmp_game = new self();
     $tmp_game->currentStrategy = $game->currentStrategy;
-    $this->board->setGrid($game->board->grid);
-    $this->boardpc->setGrid($game->boardpc->grid);
+    $tmp_game->board->setGrid($game->board->grid);
+    $tmp_game->boardpc->setGrid($game->boardpc->grid);
     foreach ($game->shipPlacements as $tmp_placement) {
-      $tmp_ship = $this->ship_exists($tmp_placement->ship->name);
+      $tmp_ship = $tmp_game->ship_exists($tmp_placement->ship->name);
+      if($tmp_ship){
+        $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
+        $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+      }
+    }
+    foreach ($game->shipPlacementspc as $tmp_placement) {
+      $tmp_ship = $tmp_game->ship_exists($tmp_placement->ship->name);
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
         $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
@@ -37,7 +44,7 @@ class Game{
   function getInfoJson(){
     $info = array();
     $info['size'] = $this->board->getSize();
-    $info['stratergies'] = $this->stratergies;
+    $info['strategies'] = $this->stratergies;
     $info['ships'] = $this->getShipInfo();
     return json_encode($info);
   }

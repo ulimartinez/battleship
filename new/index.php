@@ -19,7 +19,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
       $game->buildPCFleet();
       //save everyting to a file
       $id = saveBoard();
-      echo json_encode(array('response'=>true, 'pid'=>$id));
+      echo json_encode(array('response'=>true, 'pid'=>"".$id));
     }
   }
   else {
