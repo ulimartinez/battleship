@@ -8,7 +8,8 @@ function shootRandom(){
     $y = rand(0,9);
     $valid = call_user_func_array(array($game,"shotIsValid"), array($x, $y));
   } while (!$valid);
-  echo "$x,$y";
+  $hitShip = $game->hitShip($x, $y);
+  return $game->buildResponse($x, $y, $hitShip);
 }
 function shootSmart(){
   global $game;

@@ -24,7 +24,7 @@ class Ship{
     return json_encode($this);
   }
 
-  function isShotAt($shotIndex){
+  function setShotAt($shotIndex){
     $this->shotAt[$shotIndex] = 1;
     $this->isSunk = true;
     foreach($this->shotAt as $spot){

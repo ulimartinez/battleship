@@ -21,6 +21,20 @@ class ShipPlacement{
   function getY(){
     return $this->ycoordinate;
   }
+  function getCoordinatesArray(){
+    $arr = array($this->xcoordinate, $this->ycoordinate);
+    for($i = 1; $i < $this->ship->getSize(); $i++){
+      if($this->isHorizontal){
+        $arr[] = $this->xcoordinate+$i;
+        $arr[] = $this->ycoordinate;
+      }
+      else{
+        $arr[] = $this->xcoordinate;
+        $arr[] = $this->ycoordinate+$i;
+      }
+    }
+    return $arr;
+  }
   function setIsHorizontal($direction){
     if($direction == "false"){
       $this->isHorizontal = false;
