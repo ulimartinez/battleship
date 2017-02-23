@@ -174,12 +174,7 @@ class Game{
     else{
       $currVal = $this->board->getValueAt($x,$y);
     }
-    if($currVal > 1){
-      return false;
-    }
-    else{
-      return true;
-    }
+    return $currVal < 2;
   }
 
   function hitBoat($x,$y){
@@ -231,6 +226,7 @@ class Game{
         }
       }
     }
+    return false;
   }
 
   private function handleShot($x,$y,$shotShip,$shotIndex){
@@ -242,7 +238,7 @@ class Game{
       $this->board->setValueAt($x,$y,2);
     }
     //modify ship
-    $shotShip->getShip()->isShotAt($shotIndex);
+    $shotShip->getShip()->setShotAt($shotIndex);
   }
 
   funtion isSunk($shotShip){
