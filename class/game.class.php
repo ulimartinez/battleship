@@ -165,9 +165,9 @@ class Game{
     $this->currentStrategy = $currentStrategy;
   }
 
-  function isValid($x,$y){
-    $response = $board->getValueAt($x,$y);
-    if($response > 1){
+  function shotIsValid($x,$y){
+    $currVal = $this->board->getValueAt($x,$y);
+    if($currVal > 1){
       return false;
     }
     else{
@@ -175,16 +175,15 @@ class Game{
     }
   }
 
-  function isHit($x,$y){
+  function hitBoat($x,$y){
     $response = $board->getValueAt($x,$y);
     if($response == 0){
       $board->setValueAt($x,$y,3);
       return false;
     }
     else{
-      $shotShip = $this->findBoat($x,$y);
-      return true;
-    } 
+      return $this->findBoat($x,$y);
+    }
   }
 
   function findBoat($x,$y){
@@ -192,8 +191,7 @@ class Game{
     $ships = $this->$shipPlacements();
     foreach($ships as $ship){
       $size = $ship->getShip()->getSize();
-      if($ship->isHorizontal(){
-
+      if($ship->isHorizontal()){
       }
       else{
         if($ship->getX() == $x){
