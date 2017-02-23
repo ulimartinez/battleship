@@ -201,7 +201,7 @@ class Game{
     }
     foreach($ships as $ship){
       $size = $ship->getShip()->getSize();
-      if($ship->isHorizontal()){
+      if($ship->isHorizontal){
         if($ship->getY() == $y){
           for($i = $ship->getX(); $i < $ship->getX()+$size; $i++){
             if($i == $x){
