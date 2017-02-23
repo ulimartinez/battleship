@@ -1,8 +1,7 @@
 <?php
-require_once 'shipPlacement.class.php';
-require_once 'ship.class.php';
-require_once 'board.class.php';
-require_once 'strategy.class.php';
+spl_autoload_register(function ($class_name) {
+    include $class_name . '.class.php';
+});
 class Game{
   public $board;
   public $boardpc;
@@ -19,6 +18,7 @@ class Game{
     $this->shipPlacementspc = $this->create_ships();
   }
   public static function createFromJson($json_str){
+    //TODO: check if pc ship placement works correctly
     $game = json_decode($json_str);
     //create the object
     $tmp_game = new self();
@@ -33,7 +33,7 @@ class Game{
       }
     }
     foreach ($game->shipPlacementspc as $tmp_placement) {
-      $tmp_ship = $tmp_game->ship_exists($tmp_placement->ship->name);
+      $tmp_ship = $tmp_game->ship_exists($tmp_placement->ship->name, true);
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
         $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
@@ -64,6 +64,9 @@ class Game{
     }
     return $ships_info;
   }
+  function getStrategy(){
+    return $this->currentStrategy;
+  }
   function storeShipPlacement($ship_info){
     $shipPlacement = $this->ship_exists($ship_info[0]);
     if($shipPlacement){
@@ -76,8 +79,12 @@ class Game{
     }
     return true;
   }
-  protected function ship_exists($ship_name){
-    foreach($this->shipPlacements as $shipPlacement){
+  protected function ship_exists($ship_name, $isPc = false){
+    $placements = $this->shipPlacements;
+    if($isPc){
+      $placements = $this->shipPlacementspc;
+    }
+    foreach($placements as $shipPlacement){
       if(strcasecmp($ship_name, $shipPlacement->getShip()->getName()) == 0){
         return $shipPlacement;
       }
@@ -156,14 +163,6 @@ class Game{
 
   function set_strategy($currentStrategy){
     $this->currentStrategy = $currentStrategy;
-    $statergie=new Strategy($currentStrategy);
-    if($statergie->getStrategy() == "Smart"){
-      $statergie->smartStrategy();
-    } elseif ($statergie->getStrategy() == "Random") {
-      $statergie->randomStrategy();
-    } else {
-      $statergie->sweepStrategy();
-    }
   }
 
   function isValid($x,$y){
@@ -210,6 +209,5 @@ class Game{
     }
     //check pc boats
   }
-
 }
 ?>

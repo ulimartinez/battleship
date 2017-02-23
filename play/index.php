@@ -1,10 +1,14 @@
 <?php
 require_once "../class/game.class.php";
+require "strategies.php";
+$game;
 if(isset($_GET['pid']) and isset($_GET['shot'])){
   $pid = $_GET['pid'];
   $shot_str = $_GET['shot'];
-  if(verifyId($pid)){
+  $game = verifyId($pid);
+  if($game){
     //the id exists
+    pcMove();
   }
   if(parse_shoot($shot_str)){
     //it is well formed, continue
@@ -26,10 +30,11 @@ function verifyId($id){
       //the file exists
       $json = file_get_contents($path."g-$id.json");
       $game = Game::createFromJson($json);
-      var_dump($game);
+      return $game;
     }
     else{
       setShootInvalid("The specified player id is not valid");
+      return false;
     }
   }
 }
@@ -60,26 +65,11 @@ function parse_shoot($shot_str){
         }
       }
 }
-function isHit($x,$y){
-	if($game->isHit($x,$y)){
-		$game->handleShot($x,$y);
-		if($game->isWin()){
-			isWin();
-		}
-		else{
-			ack_shot();
-		}
-	}
-	else{
-		setShootInvalid("Already shot here");
-	}
-}
-function ack_shot(){
-}
-function isWin(){
-}
-function pid_exists(){
 
+function pcMove(){
+  global $game;
+  $strat = $game->getStrategy();
+  call_user_func("shoot".$strat);
 }
 
 /*{"response": true,
