@@ -252,9 +252,11 @@ class Game{
   function isWon(){
     if($this->isUserTurn){
       $currShips = $this->shipPlacementspc;
+      $this->isUserTurn = false;
     }
     else{
       $currShips = $this->shipPlacements;
+      $this->isUserTurn = true;
     }
     $won = true;
     foreach($currShips as $ship){
