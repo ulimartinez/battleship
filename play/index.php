@@ -60,7 +60,19 @@ function parse_shoot($shot_str){
         }
       }
 }
-function isHit(){
+function isHit($x,$y){
+	if($game->isHit($x,$y)){
+		$game->handleShot($x,$y);
+		if($game->isWin()){
+			isWin();
+		}
+		else{
+			ack_shot();
+		}
+	}
+	else{
+		setShootInvalid("Already shot here");
+	}
 }
 function ack_shot(){
 }

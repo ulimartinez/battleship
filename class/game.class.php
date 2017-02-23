@@ -156,15 +156,60 @@ class Game{
 
   function set_strategy($currentStrategy){
     $this->currentStrategy = $currentStrategy;
-      $statergie=new Strategy($currentStrategy);
-      if($statergie->getStrategy() == "Smart"){
-        $statergie->smartStrategy();
-      } elseif ($statergie->getStrategy() == "Random") {
-        $statergie->randomStrategy();
-      } else {
-        $statergie->sweepStrategy();
+    $statergie=new Strategy($currentStrategy);
+    if($statergie->getStrategy() == "Smart"){
+      $statergie->smartStrategy();
+    } elseif ($statergie->getStrategy() == "Random") {
+      $statergie->randomStrategy();
+    } else {
+      $statergie->sweepStrategy();
+    }
+  }
+
+  function isValid($x,$y){
+    $response = $board->getValueAt($x,$y);
+    if($response > 1){
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+  function isHit($x,$y){
+    $response = $board->getValueAt($x,$y);
+    if($response == 0){
+      $board->setValueAt($x,$y,3);
+      return false;
+    }
+    else{
+      $shotShip = $this->findBoat($x,$y);
+      return true;
+    } 
+  }
+
+  function findBoat($x,$y){
+    //chech user boats
+    $ships = $this->$shipPlacements();
+    foreach($ships as $ship){
+      $size = $ship->getShip()->getSize();
+      if($ship->isHorizontal(){
+
+      }
+      else{
+        if($ship->getX() == $x){
+          for($j = $ship->getY(); $j < $ship->getY()+$size; $j++){
+            if($j == $y){
+
+              $ship->handleShot($shotIndex);
+              return $ship;
+            }
+          }
+        }
       }
     }
+    //check pc boats
+  }
 
 }
 ?>
