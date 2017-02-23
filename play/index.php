@@ -8,14 +8,18 @@ if(isset($_GET['pid']) and isset($_GET['shot'])){
   $game = verifyId($pid);
   if($game){
     //the id exists
-    pcMove();
+    if($shot = parse_shoot($shot_str)){
+      $response = array("response"=>true);
+      //it is well formed, continue
+      //player's shot
+      $response['ack_shot'] = playerMove($shot[0], $shot[1]);
+      //pc's shot
+      $response['shot'] = pcMove();
+      echo json_encode($response);
+    }
   }
-  if(parse_shoot($shot_str)){
-    //it is well formed, continue
-    echo 'SHOOT';
-  }
-  else {
-    setShootInvalid("Parse error, shoot not well specified");
+  else{
+    setShootInvalid("There is no active game with id $pid");
   }
 }
 else {
@@ -53,23 +57,24 @@ function setShootInvalid($reason){
 }
 function parse_shoot($shot_str){
   $shoot_coordinates = explode(",", $shot_str);
-  if(count($shoot_coordinates) != 2){
+  if(count($shoot_coordinates) != 2 OR !(filter_var($shoot_coordinates[0], FILTER_VALIDATE_INT) AND $shoot_coordinates[0] <=10) OR !(filter_var($shoot_coordinates[1], FILTER_VALIDATE_INT) AND $shoot_coordinates[1] <=10)){
     setShootInvalid("coordinates has to be indicated as (x,y) integers");
+    return false;
   }
   else {
-    if(filter_var($shoot_coordinates[0], FILTER_VALIDATE_INT) AND $shoot_coordinates[0] <=10) {
-      if(filter_var($shoot_coordinates[1], FILTER_VALIDATE_INT) AND $shoot_coordinates[1] <=10) {
-          //well fosrmed DO SOMETHING
-              return true;
-          }
-        }
-      }
+    return array($shoot_coordinates[0], $shoot_coordinates[1]);
+  }
 }
 
 function pcMove(){
   global $game;
   $strat = $game->getStrategy();
-  call_user_func("shoot".$strat);
+  return call_user_func("shoot".$strat);
+}
+function playerMove($x, $y){
+  global $game;
+  $hitShip = $game->hitShip($x, $y);
+  return $game->buildResponse($x, $y, $hitShip);
 }
 
 /*{"response": true,

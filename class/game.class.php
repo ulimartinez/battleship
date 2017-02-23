@@ -177,16 +177,14 @@ class Game{
     return $currVal < 2;
   }
 
-  function hitBoat($x,$y){
+  function hitShip($x,$y){
+    $currBoard = $this->board;
     if($this->isUserTurn){
       $currBoard = $this->boardpc;
     }
-    else{
-      $currBoard = $this->board;
-    }
     $currVal = $currBoard->getValueAt($x,$y);
     if($currVal == 0){
-      $boardpc->setValueAt($x,$y,3);
+      $currBoard->setValueAt($x,$y,3);
       return false;
     }
     else{
@@ -205,7 +203,7 @@ class Game{
       $size = $ship->getShip()->getSize();
       if($ship->isHorizontal()){
         if($ship->getY() == $y){
-          for($i = $ship->getX(); $i < $ship->getX()+$size; i++){
+          for($i = $ship->getX(); $i < $ship->getX()+$size; $i++){
             if($i == $x){
               $shotIndex = $i-$ship->getX();
               handleShot($x,$y,$ship,$shotIndex);
@@ -241,7 +239,7 @@ class Game{
     $shotShip->getShip()->setShotAt($shotIndex);
   }
 
-  funtion isSunk($shotShip){
+  function isSunk($shotShip){
     return $shotShip->getShip()->isSunk();
   }
 
@@ -262,6 +260,32 @@ class Game{
       }
     }
     return $won;
+  }
+  function buildResponse($x, $y, $ship){
+    $response = array();
+    if($ship){
+      //case where hit
+      $response['isHit'] = true;
+      $response['isWin'] = $this->isWon();
+      $sunk = $ship->getShip->isSunk();
+      $response['isSunk'] = $sunk;
+      if($sunk){
+        $response['ship'] = $ship->getCoordinatesArray();
+      }
+      else{
+        $response['ship'] = array();
+      }
+    }
+    else{
+      //case where no hit
+      $response['isHit'] = false;
+      $response['isWin'] = false;
+      $response['isSunk'] = false;
+      $response['ship'] = array();
+    }
+    $response['x'] = $x+1;
+    $response['y'] = $y+1;
+    return $response;
   }
 }
 ?>
