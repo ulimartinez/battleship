@@ -8,11 +8,11 @@ class Ship{
   function __construct($name, $size){
     $this->name = $name;
     $this->size = $size;
+    $this->isSunk = false;
     $this->shotAt = array();
     for($i = 0; $i < $size; $i++){
       $this->shotAt[] = 0;
     }
-    $this->isSunk = false;
   }
   function getName(){
     return $this->name;
@@ -33,6 +33,9 @@ class Ship{
         break;
       }
     }
+  }
+  function setShotAtArray($arr){
+    $this->shotAt = $arr;
   }
 
   function isSunk(){

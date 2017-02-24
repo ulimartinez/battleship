@@ -32,6 +32,7 @@ class Game{
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
         $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+        $tmp_ship->getShip()->setShotAtArray($tmp_placement->ship->shotAt);
       }
     }
     foreach ($game->shipPlacementspc as $tmp_placement) {
@@ -39,6 +40,7 @@ class Game{
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
         $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+        $tmp_ship->getShip()->setShotAtArray($tmp_placement->ship->shotAt);
       }
     }
     return $tmp_game;
