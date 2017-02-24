@@ -32,6 +32,7 @@ class Game{
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
         $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+        $tmp_ship->getShip()->setShotAtArray($tmp_placement->ship->shotAt);
       }
     }
     foreach ($game->shipPlacementspc as $tmp_placement) {
@@ -39,6 +40,7 @@ class Game{
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
         $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+        $tmp_ship->getShip()->setShotAtArray($tmp_placement->ship->shotAt);
       }
     }
     return $tmp_game;
@@ -112,7 +114,7 @@ class Game{
   function buildPCFleet(){
     foreach($this->shipPlacementspc as $ship){
       $size = $ship->getShip()->getSize();
-      $isHorizontal = rand(0,1);
+      $isHorizontal = (bool)rand(0,1);
       if($isHorizontal){
         $available = false;
         while(!$available){
@@ -129,7 +131,7 @@ class Game{
           }
           if($available){
             $ship->setCoordinate($x,$y);
-            $ship->setIsHorizontal($isHorizontal);
+            $ship->setIsHorizontal(false);
             for($i = $x; $i < ($size+$x);$i++){
               $this->boardpc->setValueAt($i,$y,1);
             }
@@ -153,7 +155,7 @@ class Game{
           }
           if($available){
             $ship->setCoordinate($x,$y);
-            $ship->setIsHorizontal($isHorizontal);
+            $ship->setIsHorizontal(true);
             for($j = $y; $j < ($size+$y);$j++){
               $this->boardpc->setValueAt($x,$j,1);
             }
@@ -174,7 +176,7 @@ class Game{
     else{
       $currVal = $this->board->getValueAt($x,$y);
     }
-    return $currVal < 2;
+    return (bool)($currVal < 2);
   }
 
   function hitShip($x,$y){
@@ -250,7 +252,7 @@ class Game{
     }
     else{
       $currShips = $this->shipPlacements;
-      $this->isUserTurn = true;
+      //$this->isUserTurn = true;
     }
     $won = true;
     foreach($currShips as $ship){
@@ -279,7 +281,7 @@ class Game{
     else{
       //case where no hit
       $response['isHit'] = false;
-      $response['isWin'] = false;
+      $response['isWin'] = $this->isWon();
       $response['isSunk'] = false;
       $response['ship'] = array();
     }
