@@ -75,8 +75,14 @@ function pcMove(){
 }
 function playerMove($x, $y){
   global $game;
-  $hitShip = $game->hitShip($x, $y);
-  return $game->buildResponse($x, $y, $hitShip);
+  if($game->shotIsValid($x, $y)){
+    $hitShip = $game->hitShip($x, $y);
+    return $game->buildResponse($x, $y, $hitShip);
+  }
+  else{
+    setShootInvalid("Not a valid place to shoot");
+    return false;
+  }
 }
 function saveBoard(){
   global $pid;

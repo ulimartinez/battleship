@@ -49,6 +49,7 @@ function saveBoard(){
   return $id;
 }
 function getFileNameAndId(){
+  //TODO: fix for 2 digit numbers
   $path = "../games";
   $games = scandir($path);
   $num = 1;
