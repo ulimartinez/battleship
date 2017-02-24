@@ -2,15 +2,15 @@
 class Ship{
   public $name;
   public $size;
-  private $shotAt;
-  private $isSunk;
+  public $shotAt;
+  public $isSunk;
 
   function __construct($name, $size){
     $this->name = $name;
     $this->size = $size;
-    $this->shotAt = array($this->size);
-    foreach($this->shotAt as $spot){
-      $spot = 0;
+    $this->shotAt = array();
+    for($i = 0; $i < $size; $i++){
+      $this->shotAt[] = 0;
     }
     $this->isSunk = false;
   }
