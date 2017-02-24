@@ -25,12 +25,12 @@ class ShipPlacement{
     $arr = array($this->xcoordinate, $this->ycoordinate);
     for($i = 1; $i < $this->ship->getSize(); $i++){
       if($this->isHorizontal){
-        $arr[] = $this->xcoordinate+$i;
-        $arr[] = $this->ycoordinate;
+        $arr[] = $this->xcoordinate+$i+1;
+        $arr[] = $this->ycoordinate+1;
       }
       else{
-        $arr[] = $this->xcoordinate;
-        $arr[] = $this->ycoordinate+$i;
+        $arr[] = $this->xcoordinate+1;
+        $arr[] = $this->ycoordinate+$i+1;
       }
     }
     return $arr;
