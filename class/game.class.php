@@ -31,7 +31,7 @@ class Game{
       $tmp_ship = $tmp_game->ship_exists($tmp_placement->ship->name);
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
-        $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+        $tmp_ship->setIsHorizontal((($tmp_placement->isHorizontal === FALSE) ? 'false' : 'true'));
         $tmp_ship->getShip()->setShotAtArray($tmp_placement->ship->shotAt);
       }
     }
@@ -39,7 +39,7 @@ class Game{
       $tmp_ship = $tmp_game->ship_exists($tmp_placement->ship->name, true);
       if($tmp_ship){
         $tmp_ship->setCoordinate($tmp_placement->xcoordinate, $tmp_placement->ycoordinate);
-        $tmp_ship->setIsHorizontal($tmp_placement->isHorizontal);
+        $tmp_ship->setIsHorizontal((($tmp_placement->isHorizontal === FALSE) ? 'false' : 'true'));
         $tmp_ship->getShip()->setShotAtArray($tmp_placement->ship->shotAt);
       }
     }
