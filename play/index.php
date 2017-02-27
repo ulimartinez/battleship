@@ -17,7 +17,12 @@ if(isset($_GET['pid']) and isset($_GET['shot'])){
       //pc's shot
       $response['shot'] = pcMove();
       echo json_encode($response);
-      saveBoard();
+      if($response['shot']['isWin'] OR $response['ack_shot']['isWin']){
+        unlink_game($pid);
+      }
+      else{
+        saveBoard();
+      }
     }
   }
   else{
@@ -92,6 +97,11 @@ function saveBoard(){
   $fp = fopen("../games/$file_name", 'w');
   fwrite($fp, $json);
   fclose($fp);
+}
+function unlink_game($id){
+  $file_name = "g-$id.json";
+  $path = "../games/";
+  unlink($path.$file_name);
 }
 
 /*{"response": true,

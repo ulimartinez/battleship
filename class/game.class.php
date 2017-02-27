@@ -75,7 +75,7 @@ class Game{
     $shipPlacement = $this->ship_exists($ship_info[0]);
     if($shipPlacement){
       //store the coords and value
-      $shipPlacement->setCoordinate(intval($ship_info[1]), intval($ship_info[2]));
+      $shipPlacement->setCoordinate(intval($ship_info[1])-1, intval($ship_info[2])-1);
       $shipPlacement->setIsHorizontal($ship_info[3]);
     }
     else{
@@ -131,7 +131,7 @@ class Game{
           }
           if($available){
             $ship->setCoordinate($x,$y);
-            $ship->setIsHorizontal(false);
+            $ship->setIsHorizontal(true);
             for($i = $x; $i < ($size+$x);$i++){
               $this->boardpc->setValueAt($i,$y,1);
             }
@@ -155,7 +155,7 @@ class Game{
           }
           if($available){
             $ship->setCoordinate($x,$y);
-            $ship->setIsHorizontal(true);
+            $ship->setIsHorizontal(false);
             for($j = $y; $j < ($size+$y);$j++){
               $this->boardpc->setValueAt($x,$j,1);
             }

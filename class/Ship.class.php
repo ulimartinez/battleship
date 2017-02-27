@@ -26,20 +26,14 @@ class Ship{
 
   function setShotAt($shotIndex){
     $this->shotAt[$shotIndex] = 1;
-    $this->isSunk = true;
-    foreach($this->shotAt as $spot){
-      if($spot == 0){
-        $this->isSunk = false;
-        break;
-      }
-    }
+    $this->isSunk = (bool)(array_sum($this->shotAt) == $this->size);
   }
   function setShotAtArray($arr){
     $this->shotAt = $arr;
   }
 
   function isSunk(){
-    return $this->isSunk;
+    return (bool)(array_sum($this->shotAt) == $this->size);
   }
 }
  ?>

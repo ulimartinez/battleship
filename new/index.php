@@ -13,7 +13,7 @@ if(isset($_GET['strategy']) and isset($_GET['ships'])){
   $ships_str = $_GET['ships'];
   if(parse_ships($ships_str)){
     //it is well formed, continue
-    if(checkBoundsAndOverlap($game)){
+    if(checkBoundsAndOverlap()){
       //ships are ok, placed good
       //build the opponent ship placement
       $game->buildPCFleet();
@@ -56,9 +56,9 @@ function getFileNameAndId(){
   if(count($games) > 2){
     //case where there are files in here
     //store the name of the last file
-    $last_file = $games[count($games)-1];
-    $base = explode(".", $last_file)[0];
-    $num = (int)(explode("-", $base)[1])+1;
+    $ids = preg_replace("/[^0-9]/", "", $games);
+    sort($ids, SORT_NUMERIC);
+    $num = $ids[count($ids)-1]+1;
   }
   return array("filename"=>"g-$num.json", "id"=>$num);
 }
@@ -84,6 +84,12 @@ function check_ship_syntax($ship){
       if(filter_var($components[1], FILTER_VALIDATE_INT) AND $components[1] <=10){
         if($components[3] == "false" OR $components[3] == "true"){
           //well formed
+          if($components[3] === "true"){
+            $components[3] = true;
+          }
+          else{
+            $components[3] = false;
+          }
           if($game->storeShipPlacement($components)){
             return true;
           }
@@ -104,28 +110,28 @@ function checkBoundsAndOverlap(){
   $board = $game->getBoard();
   foreach($ships as $shipPlacement){
     if($shipPlacement->isHorizontal){
-        if($shipPlacement->getX()+$shipPlacement->getShip()->getSize()>11){
+        if($shipPlacement->getX()+$shipPlacement->getShip()->getSize()>10){
           setInvalid("Ship '".$shipPlacement->getShip()->getName()."' out of bounds");
         }
         for($i = 0; $i<$shipPlacement->getShip()->getSize(); $i++){
-          if($board->getValueAt($shipPlacement->getX()+$i-1, $shipPlacement->getY()-1) != 0){
+          if($board->getValueAt($shipPlacement->getX()+$i, $shipPlacement->getY()) != 0){
             setInvalid("Overlapping ships");
           }
           else{
-            $board->setValueAt($shipPlacement->getX()+$i-1, $shipPlacement->getY()-1, 1);
+            $board->setValueAt($shipPlacement->getX()+$i, $shipPlacement->getY(), 1);
           }
         }
     }
     else{
-      if($shipPlacement->getY()+$shipPlacement->getShip()->getSize()>11){
+      if($shipPlacement->getY()+$shipPlacement->getShip()->getSize()>10){
         setInvalid("Ship '".$shipPlacement->getShip()->getName()."' out of bounds");
       }
       for($j = 0; $j<$shipPlacement->getShip()->getSize(); $j++){
-          if($board->getValueAt($shipPlacement->getX()-1, $shipPlacement->getY()+$j-1) != 0){
+          if($board->getValueAt($shipPlacement->getX(), $shipPlacement->getY()+$j) != 0){
             setInvalid("Overlapping ships");
           }
           else{
-            $board->setValueAt($shipPlacement->getX()-1, $shipPlacement->getY()+$j-1, 1);
+            $board->setValueAt($shipPlacement->getX(), $shipPlacement->getY()+$j, 1);
           }
         }
     }

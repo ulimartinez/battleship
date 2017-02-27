@@ -22,7 +22,7 @@ class ShipPlacement{
     return $this->ycoordinate;
   }
   function getCoordinatesArray(){
-    $arr = array($this->xcoordinate, $this->ycoordinate);
+    $arr = array($this->xcoordinate+1, $this->ycoordinate+1);
     for($i = 1; $i < $this->ship->getSize(); $i++){
       if($this->isHorizontal){
         $arr[] = $this->xcoordinate+$i+1;
@@ -36,12 +36,7 @@ class ShipPlacement{
     return $arr;
   }
   function setIsHorizontal($direction){
-    if($direction == "false"){
-      $this->isHorizontal = false;
-    }
-    else{
-      $this->isHorizontal = true;
-    }
+    $this->isHorizontal = $direction;
   }
   function toJson(){
     return json_encode($this);

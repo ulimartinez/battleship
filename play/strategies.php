@@ -13,8 +13,8 @@ function shootRandom(){
 }
 function shootSmart(){
   global $game;
-  $cheat = rand(0,1);
-  if($cheat){
+  $cheat = rand(0,2);
+  if($cheat < 1){
     //do some cheeky stuff here
     foreach ($game->shipPlacements as $shipPlacement) {
       if($shipPlacement->isHorizontal){
@@ -42,9 +42,9 @@ function shootSmart(){
 function shootSweep(){
   global $game;
   for($i = 0; $i < 10; $i++){
-    for($j = 0; $j < 10; $i++){
-      if($game->shotIsValid($i, $j)){
-        return doShot($i, $j);
+    for($j = 0; $j < 10; $j++){
+      if($game->shotIsValid($j, $i)){
+        return doShot($j, $i);
         break 2;
       }
     }
