@@ -1,3 +1,9 @@
+/**
+ *@author Elsa Gonzalez
+ *@author Pedro Barragan
+ *@author Ulises Martinez
+ *this section was automatically inserted sing a sh script
+ */
 <?php
 class Board{
   public $size;

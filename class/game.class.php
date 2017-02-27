@@ -1,3 +1,9 @@
+/**
+ *@author Elsa Gonzalez
+ *@author Pedro Barragan
+ *@author Ulises Martinez
+ *this section was automatically inserted sing a sh script
+ */
 <?php
 spl_autoload_register(function ($class_name) {
     include $class_name . '.class.php';

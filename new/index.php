@@ -1,3 +1,9 @@
+/**
+ *@author Elsa Gonzalez
+ *@author Pedro Barragan
+ *@author Ulises Martinez
+ *this section was automatically inserted sing a sh script
+ */
 <?php
 header('Content-Type: application/json');
 require_once '../class/game.class.php';
